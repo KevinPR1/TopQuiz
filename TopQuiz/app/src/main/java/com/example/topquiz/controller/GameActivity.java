@@ -1,7 +1,9 @@
 package com.example.topquiz.controller;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,8 +23,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Button mPlayB2 ;
     private Button mPlayB3 ;
     private Button mPlayB4 ;
+
     private QuestionBank mQuestionBank;
     private Question mCurrentQuestion;
+    private int mScore ;
+    private int mNumberOfQuestion ;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +38,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_game);
 
         mQuestionBank = this.generateQuestions();
+        mScore = 0 ;
+
+        mNumberOfQuestion = 4 ;
 
         mQuestion = (TextView) findViewById(R.id.activity_game_question_text);
         mPlayB1 = (Button) findViewById(R.id.activity_game_answer1_btn);
@@ -65,22 +76,43 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         int responseIndex = (int) v.getTag();
 
         if (responseIndex == mCurrentQuestion.getAnswerIndex()) {
-
             // Good answer
-
             Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
-
-            
-
+            mScore ++ ;
         } else {
-
             // Wrong answer
-
             Toast.makeText(this, "Wrong answer!", Toast.LENGTH_SHORT).show();
-
         }
 
+        if (-- mNumberOfQuestion == 0) {
+            // No question left, end the game
+            endGame() ;
+        } else {
+            mCurrentQuestion = mQuestionBank.getQuestion();
+            displayQuestion(mCurrentQuestion);
+        }
     }
+
+    private void endGame (){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Braavo!")
+                .setMessage("Ton score est " + mScore)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .create()
+                .show();
+
+
+
+    }
+
+
+
 
     private void displayQuestion(final Question question) {
         // Set the text for the question text view and the four buttons
@@ -90,7 +122,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mPlayB3.setText(question.getChoiceList().get(2));
         mPlayB4.setText(question.getChoiceList().get(3));
     }
-
 
 
     private QuestionBank generateQuestions(){
@@ -123,9 +154,46 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         "Le fondateur de l'akatsuki"),
                 2);
 
+        Question question5 = new Question("Qui est le Fondateur de l'akatsuki ?",
+                Arrays.asList("Madara",
+                        "Minato",
+                        "Pain",
+                        "Kyubi"),
+                2);
+
+        Question question6 = new Question("Qui a invoqué Madara et les 5 Kages pendant la 3ème grande guerre Shinobi ?",
+                Arrays.asList("Sakura",
+                        "Kabuto",
+                        "Tsunade",
+                        "Luffy"),
+                1);
+
+        Question question7 = new Question("Qui est le rival de Madara?",
+                Arrays.asList("Hashirama senju",
+                        "Jiraya",
+                        "Zoro",
+                        "Konoha-Maru Sarutobi"),
+                0);
+
+        Question question8 = new Question("L'oeil gauche de Kakashi sensei est à ...?",
+                Arrays.asList("Shisui",
+                        "Minato",
+                        "Gaara",
+                        "Tobi(Obito)"),
+                3);
+
+        Question question9 = new Question("Quel village a été détruit par Pain?",
+                Arrays.asList("Suna",
+                        "Konoha",
+                        "Kumo",
+                        "Kiri"),
+                1);
+
+
         return new QuestionBank(Arrays.asList(question1,
                 question2,
-                question3,question4));
+                question3,
+                question4,question5, question6,question7,question8,question9 ));
 
 
 
