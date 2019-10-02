@@ -22,11 +22,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Button mPlayB3 ;
     private Button mPlayB4 ;
     private QuestionBank mQuestionBank;
+    private Question mCurrentQuestion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        mQuestionBank = this.generateQuestions();
 
         mQuestion = (TextView) findViewById(R.id.activity_game_question_text);
         mPlayB1 = (Button) findViewById(R.id.activity_game_answer1_btn);
@@ -42,21 +45,45 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mPlayB3.setTag(2);
         mPlayB4.setTag(3);
 
-// Use the same listener for the four buttons.
+        mCurrentQuestion = mQuestionBank.getQuestion();
+        this.displayQuestion(mCurrentQuestion);
+
+
+        // Use the same listener for the four buttons.
 // The tag value will be used to distinguish the button triggered
-       mPlayB1.setOnClickListener(this);
-       mPlayB2.setOnClickListener(this);
-       mPlayB3.setOnClickListener(this);
-       mPlayB4.setOnClickListener(this);
-
-
+        mPlayB1.setOnClickListener(this);
+        mPlayB2.setOnClickListener(this);
+        mPlayB3.setOnClickListener(this);
+        mPlayB4.setOnClickListener(this);
 
     }
 
 
+
+    @Override
+    public void onClick(View v) {
+        int responseIndex = (int) v.getTag();
+
+        if (responseIndex == mCurrentQuestion.getAnswerIndex()) {
+
+            // Good answer
+
+            Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
+
+            
+
+        } else {
+
+            // Wrong answer
+
+            Toast.makeText(this, "Wrong answer!", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
     private void displayQuestion(final Question question) {
         // Set the text for the question text view and the four buttons
-
         mQuestion.setText(question.getQuestion());
         mPlayB1.setText(question.getChoiceList().get(0));
         mPlayB2.setText(question.getChoiceList().get(1));
@@ -105,13 +132,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    @Override
-    public void onClick(View v) {
 
-        int responseIndex = (int) v.getTag();
-        Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
-
-    }
 
 
 }
