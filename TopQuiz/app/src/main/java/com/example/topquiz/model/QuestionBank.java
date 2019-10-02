@@ -8,13 +8,12 @@ import java.util.List;
  */
 public class QuestionBank {
 
-
-
     private List<Question> mQuestionList;
     private int mNextQuestionIndex;
 
     public QuestionBank(List<Question> questionList) {
         mQuestionList = questionList;
+
         // Shuffle the question list before storing it
         Collections.shuffle(mQuestionList);
     }
@@ -24,9 +23,8 @@ public class QuestionBank {
             mNextQuestionIndex = 0;
         }
 
-
         // Loop over the questions and return a new one at each call
-        return mQuestionList.get(mNextQuestionIndex);
+        return mQuestionList.get(mNextQuestionIndex++);
     }
 
 
