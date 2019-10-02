@@ -40,7 +40,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mQuestionBank = this.generateQuestions();
         mScore = 0 ;
 
-        mNumberOfQuestion = 4 ;
+        mNumberOfQuestion = 4;
 
         mQuestion = (TextView) findViewById(R.id.activity_game_question_text);
         mPlayB1 = (Button) findViewById(R.id.activity_game_answer1_btn);
@@ -97,7 +97,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Braavo!")
-                .setMessage("Ton score est " + mScore)
+                .setMessage("Ton score est de " + mScore + "/4")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -107,11 +107,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 .create()
                 .show();
 
-
-
     }
-
-
 
 
     private void displayQuestion(final Question question) {
