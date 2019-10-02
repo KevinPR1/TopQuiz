@@ -3,9 +3,10 @@ package com.example.topquiz.controller;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.topquiz.R;
 import com.example.topquiz.model.Question;
@@ -13,7 +14,7 @@ import com.example.topquiz.model.QuestionBank;
 
 import java.util.Arrays;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView mQuestion;
     private Button mPlayB1 ;
@@ -34,12 +35,35 @@ public class GameActivity extends AppCompatActivity {
         mPlayB4 = (Button) findViewById(R.id.activity_game_answer4_btn);
         mQuestionBank = this.generateQuestions();
 
+// Use the tag property to 'name' the buttons
+
+        mPlayB1.setTag(0);
+        mPlayB2.setTag(1);
+        mPlayB3.setTag(2);
+        mPlayB4.setTag(3);
+
+// Use the same listener for the four buttons.
+// The tag value will be used to distinguish the button triggered
+       mPlayB1.setOnClickListener(this);
+       mPlayB2.setOnClickListener(this);
+       mPlayB3.setOnClickListener(this);
+       mPlayB4.setOnClickListener(this);
+
+
 
     }
 
 
+    private void displayQuestion(final Question question) {
+        // Set the text for the question text view and the four buttons
 
-    
+        mQuestion.setText(question.getQuestion());
+        mPlayB1.setText(question.getChoiceList().get(0));
+        mPlayB2.setText(question.getChoiceList().get(1));
+        mPlayB3.setText(question.getChoiceList().get(2));
+        mPlayB4.setText(question.getChoiceList().get(3));
+    }
+
 
 
     private QuestionBank generateQuestions(){
@@ -65,16 +89,29 @@ public class GameActivity extends AppCompatActivity {
                         "Pain"),
                 0);
 
+        Question question4 = new Question("Qui est Madara ?",
+                Arrays.asList("Le grand frère de Sasuke Uchiwa",
+                        "Un Hokage",
+                        "Le fondateur du clan Uchiwa",
+                        "Le fondateur de l'akatsuki"),
+                2);
+
         return new QuestionBank(Arrays.asList(question1,
                 question2,
-                question3));
+                question3,question4));
 
 
 
     }
 
 
+    @Override
+    public void onClick(View v) {
 
+        int responseIndex = (int) v.getTag();
+        Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
+
+    }
 
 
 }
