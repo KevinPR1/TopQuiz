@@ -1,5 +1,6 @@
 package com.example.topquiz.controller;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,11 +30,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private QuestionBank mQuestionBank;
     private Question mCurrentQuestion;
+
     private int mScore ;
     private int mNumberOfQuestion ;
     public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
+    public static final String BUNDLE_STATE_SCORE = "currentScore";
+    public static final String BUNDLE_STATE_QUESTION = "currentQuestion";
 
     private boolean mEnableTouchEvents ;
+
 
 
     @Override
@@ -42,6 +47,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_game);
 
         mQuestionBank = this.generateQuestions();
+
+        if (savedInstanceState != null) {
+            mScore = savedInstanceState.getInt(BUNDLE_STATE_SCORE);
+            mNumberOfQuestion = savedInstanceState.getInt(BUNDLE_STATE_QUESTION);
+        } else {
+            mScore = 0;
+            mNumberOfQuestion = 4;
+        }
+
         mScore = 0 ;
         mNumberOfQuestion = 4;
         mEnableTouchEvents = true ;
@@ -71,6 +85,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mPlayB3.setOnClickListener(this);
         mPlayB4.setOnClickListener(this);
 
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        outState.putInt(BUNDLE_STATE_SCORE, mScore);
+        outState.putInt(BUNDLE_STATE_QUESTION, mNumberOfQuestion);
+
+        super.onSaveInstanceState(outState);
     }
 
 
